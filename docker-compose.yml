@@ -62,5 +62,22 @@ services:
     ports:
       - '5432:5432'
 
+  payments-ms:
+      build: ./payments-ms
+      ports:
+        - 3003:3003
+      volumes:
+        - ./payments-ms/src:/usr/src/app/src #Hot reload
+      command: npm run start:dev
+      environment:
+        - PORT=${PAYMENTS_MS_PORT}
+        - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
+        - STRIPE_SECRET=${STRIPE_SECRET}
+        - SECRET_ENDPOINT=${SECRET_ENDPOINT}
+        - URL_SUCCESS=${URL_SUCCESS}
+        - URL_CANCEL=${URL_CANCEL}
+        # - PRODUCTS_MICROSERVICE_HOST=localhost
+        # - PRODUCTS_MICROSERVICE_PORT=3001
+
 volumes:
   pgdata:
